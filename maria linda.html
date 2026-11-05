@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sereia | Moda Praia</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #80576e;
+    background-color: #fff0f5;
+    overflow-x: hidden;
+}
+
+/* Fundo com bolinhas de água */
+.bolhas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bolha {
+    position: absolute;
+    bottom: -100px;
+    border: 1px solid rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.35);
+    border-radius: 50%;
+    animation: subir linear infinite;
+}
+
+@keyframes subir {
+    to {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+
+header {
+    background: rgba(255, 221, 234, 0.95);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 3px 15px #e9b9cd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 43px;
+    color: #bd789b;
+    letter-spacing: 5px;
+}
+
+header p {
+    font-size: 11px;
+    letter-spacing: 4px;
+}
+
+nav {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #98647f;
+    font-size: 13px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: #d45d99;
+}
+
+.carrinho-topo {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    border: 1px solid #edc0d5;
+}
+
+.banner {
+    text-align: center;
+    padding: 90px 20px;
+    background: linear-gradient(135deg, #ffe3ee, #f8d5eb, #fceaf4);
+}
+
+.banner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 53px;
+    color: #b66d91;
+}
+
+.banner p {
+    margin: 15px auto;
+    max-width: 550px;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.banner .decoracao {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.banner button {
+    background: #d58bad;
+    color: white;
+    padding: 13px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-family: inherit;
+}
+
+section {
+    padding: 55px 5%;
+}
+
+.titulo {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.titulo h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 35px;
+    color: #bb7697;
+}
+
+.titulo p {
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 25px;
+}
+
+.produto {
+    background: rgba(255,255,255,0.85);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(177,105,144,0.12);
+    transition: .3s;
+    padding-bottom: 20px;
+}
+
+.produto:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 22px rgba(177,105,144,0.2);
+}
+
+.foto {
+    height: 230px;
+    background: linear-gradient(140deg,#f9d9e8,#f4e6f1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 65px;
+}
+
+.foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.produto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    margin: 15px 15px 5px;
+    color: #a76587;
+}
+
+.produto .descricao {
+    font-size: 11px;
+    margin: 0 15px 10px;
+    color: #987b8b;
+}
+
+.preco {
+    font-weight: 600;
+    font-size: 17px;
+    color: #c35e91;
+    margin: 10px 15px;
+}
+
+.produto label {
+    display: block;
+    margin: 10px 15px 5px;
+    font-size: 12px;
+}
+
+.produto select {
+    width: calc(100% - 30px);
+    margin: 0 15px;
+    padding: 9px;
+    border: 1px solid #e8bcd1;
+    border-radius: 8px;
+    color: #80576e;
+    background: white;
+}
+
+.produto button {
+    margin: 15px 15px 0;
+    width: calc(100% - 30px);
+    padding: 11px;
+    background: #d88eae;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: .3s;
+}
+
+.produto button:hover {
+    background: #bd6d94;
+}
+
+.oculos .foto {
+    background: linear-gradient(135deg,#f8dce9,#e9dced);
+}
+
+#carrinho {
+    background: #fff5f9;
+    border-radius: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 30px;
+    box-shadow: 0 3px 15px #edcfdd;
+}
+
+#listaCarrinho {
+    margin-top: 20px;
+}
+
+.item-carrinho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #f0d5e2;
+    padding: 15px 0;
+    font-size: 13px;
+}
+
+.item-carrinho button {
+    background: #e9a5bf;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.total {
+    text-align: right;
+    margin-top: 25px;
+    font-size: 21px;
+    font-weight: bold;
+    color: #bd648f;
+}
+
+.finalizar {
+    display: block;
+    margin: 20px 0 0 auto;
+    background: #b97999;
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+footer {
+    background: #f3d3e2;
+    text-align: center;
+    padding: 40px 20px;
+    line-height: 2;
+    font-size: 12px;
+}
+
+footer h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+}
+
+@media(max-width:600px) {
+    .logo { font-size: 32px; }
+    .banner h1 { font-size: 37px; }
+    .carrinho-topo {
+        position: static;
+        display: inline-block;
+        margin-top: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bolhas" id="bolhas"></div>
+
+<header>
+    <div class="logo">Sereia</div>
+    <p>𓇼 MODA PRAIA 𓇼</p>
+
+    <nav>
+        <a href="#inicio">Início</a>
+        <a href="#biquinis">Biquínis</a>
+        <a href="#maios">Maiôs</a>
+        <a href="#conjuntos">Conjuntos</a>
+        <a href="#oculos">Óculos</a>
+        <a href="#carrinho">Carrinho</a>
+    </nav>
+
+    <div class="carrinho-topo" onclick="document.getElementById('carrinho').scrollIntoView({behavior:'smooth'})">
+        🐚 Carrinho (<span id="quantidade">0</span>)
+    </div>
+</header>
+
+<div class="banner" id="inicio">
+    <div class="decoracao">𓇼 </div>
+    <h1>Bem-vinda à Sereia</h1>
+    <p>
+        Um universo de delicadeza, beleza e encanto.
+        Descubra nossa coleção de moda praia,
+        inspirada na magia do oceano.
+    </p>
+    <button onclick="document.getElementById('biquinis').scrollIntoView({behavior:'smooth'})">
+        Conheça a coleção
+    </button>
+</div>
+
+<section id="biquinis">
+    <div class="titulo">
+        <h2>𓇼 Biquínis de Crochê</h2>
+        <p>Peças artesanais feitas para encantar.</p>
+    </div>
+    <div class="produtos" id="lista-biquinis"></div>
+</section>
+
+<section id="maios">
+    <div class="titulo">
+        <h2>𓇼 Maiôs</h2>
+        <p>Elegância em cada detalhe.</p>
+    </div>
+    <div class="produtos" id="lista-maios"></div>
+</section>
+
+<section id="conjuntos">
+    <div class="titulo">
+        <h2>✧ Conjuntos Praianos</h2>
+        <p>Seu look completo para os dias de sol.</p>
+    </div>
+    <div class="produtos" id="lista-conjuntos"></div>
+</section>
+
+<section id="oculos">
+    <div class="titulo">
+        <h2>𓇼 Óculos de Sol</h2>
+        <p>O acessório perfeito para completar seu look.</p>
+    </div>
+    <div class="produtos oculos" id="lista-oculos"></div>
+</section>
+
+<section id="carrinho">
+    <div class="titulo">
+        <h2>🐚 Minha Sacolinha</h2>
+        <p>Seus favoritos estão aqui!</p>
+    </div>
+
+    <div id="listaCarrinho">
+        Sua sacolinha está vazia.
+    </div>
+
+    <div class="total">
+        Total: R$ <span id="total">0,00</span>
+    </div>
+
+    <button class="finalizar" onclick="finalizarCompra()">
+        Finalizar compra ♡
+        
+
+    </button>
+</section>
+
+<footer>
+    <h2>𓇼 Sereia </h2>
+    <p>Moda praia inspirada na delicadeza e na magia do oceano.</p>
+    <p>Entre conchas, pérolas e tons suaves, leve a magia do mar com você.</p>
+    <p>Instagram: @sereia</p>
+    <p>© 2026 Sereia — Todos os direitos reservados.</p>
+</footer>
+
+<script>
+
+// Criar bolinhas de água
+const fundo = document.getElementById("bolhas");
+
+for(let i=0; i<25; i++){
+    const bolha = document.createElement("div");
+    bolha.className = "bolha";
+    const tamanho = Math.random()*35+10;
+    bolha.style.width = tamanho+"px";
+    bolha.style.height = tamanho+"px";
+    bolha.style.left = Math.random()*100+"%";
+    bolha.style.animationDuration = (Math.random()*12+8)+"s";
+    bolha.style.animationDelay = Math.random()*10+"s";
+    fundo.appendChild(bolha);
+}
+
+// Produtos da loja
+const categorias = {
+    biquinis: {
+        nomes: [
+            "Pérola do Mar","Rosa Coral","Concha Encantada",
+            "Sereia Pink","Oceano Lilás","Brisa do Mar",
+            "Estrela do Oceano","Maré Rosada","Lua de Pérola",
+            "Jardim das Conchas"
+        ],
+        preco: 500,
+        descricao: "Biquíni artesanal de crochê"
+    },
+
+    maios: {
+        nomes: [
+            "Pérola Azul","Ondas de Cetim","Maré Encantada",
+            "Coral Rosado","Sereia Dourada","Oceano Chic",
+            "Brisa Tropical","Concha Rosa","Lua do Mar",
+            "Estrela do Verão"
+        ],
+        preco: 500,
+        descricao: "Maiô elegante de moda praia"
+    },
+
+    conjuntos: {
+        nomes: [
+            "Paraíso das Pérolas","Brisa Tropical","Doce Oceano",
+            "Conjunto Coral","Sereia dos Sonhos","Mar Azul",
+            "Rosa de Verão","Ilha Encantada","Conchas Rosadas",
+            "Jardim Tropical"
+        ],
+        preco: 500,
+        descricao: "Conjunto praiano com saída de praia"
+    },
+
+    oculos: {
+        nomes: [
+            "Sol de Pérola","Golden Sea","Maré de Cristal",
+            "Pink Summer","Oceano Chic","Sunset",
+            "Coral Glow","Blue Ocean","Sereia Lux",
+            "Summer Pearl"
+        ],
+        preco: 200,
+        descricao: "Óculos de sol feminino"
+    }
+};
+
+let carrinho = [];
+
+function criarProdutos(categoria, elemento){
+
+    const dados = categorias[categoria];
+    const destino = document.getElementById(elemento);
+
+    dados.nomes.forEach((nome, indice)=>{
+
+        const preco = dados.preco + (indice*50);
+
+        const produto = document.createElement("div");
+        produto.className = "produto";
+
+        const imagem = categoria === "oculos" ? "🕶️" :
+                       categoria === "biquinis" ? "🩱" :
+                       categoria === "maios" ? "👙" : "🌸";
+
+        produto.innerHTML = `
+            <div class="foto">${imagem}</div>
+
+            <h3>${nome}</h3>
+
+            <p class="descricao">${dados.descricao}</p>
+
+            <p class="preco">R$ ${preco.toFixed(2).replace(".",",")}</p>
+
+            ${categoria !== "oculos" ? `
+                <label>Escolha seu tamanho:</label>
+                <select class="tamanho">
+                    <option value="P">P</option>
+                    <option value="M">M</option>
+                    <option value="G">G</option>
+                    <option value="GG">GG</option>
+                </select>
+            ` : ""}
+
+            <button class="adicionar">♡ Adicionar ao carrinho</button>
+        `;
+
+        produto.querySelector(".adicionar").addEventListener("click",()=>{
+            const tamanho = categoria !== "oculos"
+                ? produto.querySelector(".tamanho").value
+                : "Único";
+
+            adicionarCarrinho(nome, preco, tamanho);
+        });
+
+        destino.appendChild(produto);
+    });
+}
+
+criarProdutos("biquinis","lista-biquinis");
+criarProdutos("maios","lista-maios");
+criarProdutos("conjuntos","lista-conjuntos");
+criarProdutos("oculos","lista-oculos");
+
+// Carrinho de compras
+function adicionarCarrinho(nome, preco, tamanho){
+
+    carrinho.push({
+        nome,
+        preco,
+        tamanho
+    });
+
+    atualizarCarrinho();
+    alert(nome+" foi adicionado à sua sacolinha! ♡");
+}
+
+function atualizarCarrinho(){
+
+    const lista = document.getElementById("listaCarrinho");
+    const quantidade = document.getElementById("quantidade");
+
+    quantidade.textContent = carrinho.length;
+
+    if(carrinho.length === 0){
+        lista.innerHTML = "Sua sacolinha está vazia.";
+    }else{
+
+        lista.innerHTML = "";
+
+        carrinho.forEach((item, indice)=>{
+
+            const linha = document.createElement("div");
+            linha.className = "item-carrinho";
+
+            const informacao = document.createElement("span");
+            informacao.textContent =
+                item.nome+" | Tamanho: "+item.tamanho+
+                " | R$ "+item.preco.toFixed(2).replace(".",",");
+
+            const remover = document.createElement("button");
+            remover.textContent = "Remover";
+            remover.addEventListener("click",()=>{
+                carrinho.splice(indice,1);
+                atualizarCarrinho();
+            });
+
+            linha.append(informacao,remover);
+            lista.appendChild(linha);
+        });
+    }
+
+    const total = carrinho.reduce((soma,item)=>soma+item.preco,0);
+
+    document.getElementById("total").textContent =
+        total.toFixed(2).replace(".",",");
+}
+
+function finalizarCompra(){
+
+    if(carrinho.length === 0){
+        alert("Sua sacolinha está vazia! ♡");
+        return;
+    }
+
+    const resumo = carrinho.map(item=>
+        item.nome+" - "+item.tamanho
+    ).join("\n");
+
+    alert(
+        "Obrigada por escolher a Sereia! 🐚\n\n"+
+        "Seus produtos:\n"+resumo+
+        "\n\nTotal: R$ "+
+        carrinho.reduce((soma,item)=>soma+item.preco,0)
+        .toFixed(2).replace(".",",")+
+        "\n\nEsta é uma demonstração da loja. O pagamento e o pedido ainda precisam ser integrados."
+    );
+}
+
+</script>
+
+</body>
+</html>
+
+
+<!-- PAGAMENTO SEREIA -->
+<style>
+.pagamento-sereia {
+    background: #fff0f6;
+    border: 1px solid #edc5d8;
+    border-radius: 18px;
+    padding: 22px;
+    margin: 20px 0;
+    color: #80566e;
+}
+.pagamento-sereia h3 {
+    color: #b66c92;
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+.pagamento-sereia label {
+    display: block;
+    margin: 12px 0;
+    cursor: pointer;
+}
+.pagamento-sereia input,
+.pagamento-sereia select {
+    accent-color: #d987ad;
+}
+.pix-area {
+    display: none;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+.cartao-area {
+    display: none;
+    margin-top: 15px;
+}
+.pagamento-sereia input[type=text] {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #edc5d8;
+    border-radius: 8px;
+}
+</style>
+

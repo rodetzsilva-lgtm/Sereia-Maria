@@ -1,414 +1,154 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sereia | Moda Praia</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;color:#80576e;background-color:#fff0f5;overflow-x:hidden}
+.bolhas{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.bolha{position:absolute;bottom:-100px;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.35);border-radius:50%;animation:subir linear infinite}
+@keyframes subir{to{transform:translateY(-120vh);opacity:0}}
+header{background:rgba(255,221,234,.95);padding:20px;text-align:center;box-shadow:0 3px 15px #e9b9cd;position:sticky;top:0;z-index:10}
+.logo{font-family:'Playfair Display',serif;font-size:43px;color:#bd789b;letter-spacing:5px}
+header p{font-size:11px;letter-spacing:4px}
+nav{margin-top:15px;display:flex;justify-content:center;flex-wrap:wrap;gap:20px}
+nav a{text-decoration:none;color:#98647f;font-size:13px;transition:.3s}
+nav a:hover{color:#d45d99}
+.carrinho-topo,.conta-topo{position:absolute;top:25px;background:#fff;padding:10px 15px;border-radius:25px;cursor:pointer;border:1px solid #edc0d5;font-size:13px}
+.carrinho-topo{right:25px}
+.conta-topo{left:25px}
+.conta-topo small{margin-left:8px;color:#c35e91;text-decoration:underline}
+.banner{text-align:center;padding:90px 20px;background:linear-gradient(135deg,#ffe3ee,#f8d5eb,#fceaf4)}
+.banner h1{font-family:'Playfair Display',serif;font-size:53px;color:#b66d91}
+.banner p{margin:15px auto;max-width:550px;line-height:1.8;font-size:14px}
+.banner .decoracao{font-size:25px;margin-bottom:15px}
+.banner button{background:#d58bad;color:#fff;padding:13px 30px;border:none;border-radius:30px;cursor:pointer;margin-top:15px;font-family:inherit}
+section{padding:55px 5%}
+.titulo{text-align:center;margin-bottom:35px}
+.titulo h2{font-family:'Playfair Display',serif;font-size:35px;color:#bb7697}
+.titulo p{font-size:12px;margin-top:8px}
+.produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:25px}
+.produto{background:rgba(255,255,255,.85);border-radius:18px;overflow:hidden;box-shadow:0 4px 15px rgba(177,105,144,.12);transition:.3s;padding-bottom:20px}
+.produto:hover{transform:translateY(-6px);box-shadow:0 8px 22px rgba(177,105,144,.2)}
+.foto{height:230px;background:linear-gradient(140deg,#f9d9e8,#f4e6f1);display:flex;justify-content:center;align-items:center}
+.foto img,.foto svg{width:100%;height:100%;object-fit:cover}
+.oculos .foto{background:linear-gradient(135deg,#f8dce9,#e9dced)}
+.produto h3{font-family:'Playfair Display',serif;font-size:19px;margin:15px 15px 5px;color:#a76587}
+.produto .descricao{font-size:11px;margin:0 15px 10px;color:#987b8b}
+.preco{font-weight:600;font-size:17px;color:#c35e91;margin:10px 15px}
+.produto label{display:block;margin:10px 15px 5px;font-size:12px}
+.produto select{width:calc(100% - 30px);margin:0 15px;padding:9px;border:1px solid #e8bcd1;border-radius:8px;color:#80576e;background:#fff}
+.produto button{margin:15px 15px 0;width:calc(100% - 30px);padding:11px;background:#d88eae;color:#fff;border:none;border-radius:20px;cursor:pointer;font-family:inherit;transition:.3s}
+.produto button:hover{background:#bd6d94}
+footer{background:#f3d3e2;text-align:center;padding:40px 20px;line-height:2;font-size:12px}
+footer h2{font-family:'Playfair Display',serif;font-size:30px}
 
-body {
-    font-family: 'Poppins', sans-serif;
-    color: #80576e;
-    background-color: #fff0f5;
-    overflow-x: hidden;
-}
+/* Painel do carrinho */
+#overlay{position:fixed;inset:0;background:rgba(128,87,110,.35);opacity:0;pointer-events:none;transition:.3s;z-index:20}
+#overlay.aberto{opacity:1;pointer-events:auto}
+#carrinho{position:fixed;top:0;right:0;height:100%;width:min(430px,100%);background:#fff5f9;box-shadow:-4px 0 20px #edcfdd;padding:28px;transform:translateX(100%);transition:.35s;z-index:21;display:flex;flex-direction:column}
+#carrinho.aberto{transform:translateX(0)}
+.fechar{position:absolute;top:14px;right:18px;background:none;border:none;font-size:26px;color:#b97999;cursor:pointer}
+#carrinho .titulo{margin-bottom:15px}
+#listaCarrinho{flex:1;overflow-y:auto;margin-top:5px;font-size:13px}
+.item-carrinho{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #f0d5e2;padding:15px 0;font-size:13px}
+.item-carrinho button{background:#e9a5bf;color:#fff;border:none;padding:7px 12px;border-radius:15px;cursor:pointer}
+.total{text-align:right;margin-top:15px;font-size:21px;font-weight:bold;color:#bd648f}
+.finalizar{display:block;margin:15px 0 0 auto;background:#b97999;color:#fff;border:none;padding:13px 25px;border-radius:25px;cursor:pointer;font-family:inherit}
 
-/* Fundo com bolinhas de água */
-.bolhas {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-}
+/* Login */
+#modalLogin{position:fixed;inset:0;background:rgba(128,87,110,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+#modalLogin.aberto{display:flex}
+.caixa-login{background:linear-gradient(135deg,#fff5f9,#ffe3ee);border-radius:22px;padding:35px 30px;width:100%;max-width:380px;box-shadow:0 10px 35px rgba(177,105,144,.35);text-align:center;position:relative}
+.caixa-login .logo{font-size:34px}
+.abas{display:flex;margin:18px 0;border-radius:25px;background:#fff;border:1px solid #edc0d5;overflow:hidden}
+.abas button{flex:1;padding:10px;border:none;background:none;cursor:pointer;font-family:inherit;color:#98647f}
+.abas button.ativa{background:#d58bad;color:#fff}
+.caixa-login input{width:100%;padding:12px;margin-bottom:12px;border:1px solid #e8bcd1;border-radius:10px;font-family:inherit;color:#80576e;background:#fff}
+.caixa-login .enviar{width:100%;padding:13px;background:#d58bad;color:#fff;border:none;border-radius:25px;cursor:pointer;font-family:inherit;font-size:14px}
+#msgLogin{font-size:12px;color:#c35e91;margin-bottom:10px;min-height:16px}
+#aviso{position:fixed;bottom:25px;left:50%;transform:translateX(-50%) translateY(80px);background:#b97999;color:#fff;padding:12px 22px;border-radius:25px;font-size:13px;transition:.4s;z-index:40;opacity:0}
+#aviso.mostrar{transform:translateX(-50%);opacity:1}
 
-.bolha {
-    position: absolute;
-    bottom: -100px;
-    border: 1px solid rgba(255,255,255,0.9);
-    background: rgba(255,255,255,0.35);
-    border-radius: 50%;
-    animation: subir linear infinite;
-}
-
-@keyframes subir {
-    to {
-        transform: translateY(-120vh);
-        opacity: 0;
-    }
-}
-
-header {
-    background: rgba(255, 221, 234, 0.95);
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 3px 15px #e9b9cd;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 43px;
-    color: #bd789b;
-    letter-spacing: 5px;
-}
-
-header p {
-    font-size: 11px;
-    letter-spacing: 4px;
-}
-
-nav {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #98647f;
-    font-size: 13px;
-    transition: .3s;
-}
-
-nav a:hover {
-    color: #d45d99;
-}
-
-.carrinho-topo {
-    position: absolute;
-    right: 25px;
-    top: 25px;
-    background: #fff;
-    padding: 10px 15px;
-    border-radius: 25px;
-    cursor: pointer;
-    border: 1px solid #edc0d5;
-}
-
-.banner {
-    text-align: center;
-    padding: 90px 20px;
-    background: linear-gradient(135deg, #ffe3ee, #f8d5eb, #fceaf4);
-}
-
-.banner h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 53px;
-    color: #b66d91;
-}
-
-.banner p {
-    margin: 15px auto;
-    max-width: 550px;
-    line-height: 1.8;
-    font-size: 14px;
-}
-
-.banner .decoracao {
-    font-size: 25px;
-    margin-bottom: 15px;
-}
-
-.banner button {
-    background: #d58bad;
-    color: white;
-    padding: 13px 30px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    margin-top: 15px;
-    font-family: inherit;
-}
-
-section {
-    padding: 55px 5%;
-}
-
-.titulo {
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.titulo h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 35px;
-    color: #bb7697;
-}
-
-.titulo p {
-    font-size: 12px;
-    margin-top: 8px;
-}
-
-.produtos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 25px;
-}
-
-.produto {
-    background: rgba(255,255,255,0.85);
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(177,105,144,0.12);
-    transition: .3s;
-    padding-bottom: 20px;
-}
-
-.produto:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 22px rgba(177,105,144,0.2);
-}
-
-.foto {
-    height: 230px;
-    background: linear-gradient(140deg,#f9d9e8,#f4e6f1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 65px;
-}
-
-.foto img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.produto h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 19px;
-    margin: 15px 15px 5px;
-    color: #a76587;
-}
-
-.produto .descricao {
-    font-size: 11px;
-    margin: 0 15px 10px;
-    color: #987b8b;
-}
-
-.preco {
-    font-weight: 600;
-    font-size: 17px;
-    color: #c35e91;
-    margin: 10px 15px;
-}
-
-.produto label {
-    display: block;
-    margin: 10px 15px 5px;
-    font-size: 12px;
-}
-
-.produto select {
-    width: calc(100% - 30px);
-    margin: 0 15px;
-    padding: 9px;
-    border: 1px solid #e8bcd1;
-    border-radius: 8px;
-    color: #80576e;
-    background: white;
-}
-
-.produto button {
-    margin: 15px 15px 0;
-    width: calc(100% - 30px);
-    padding: 11px;
-    background: #d88eae;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: .3s;
-}
-
-.produto button:hover {
-    background: #bd6d94;
-}
-
-.oculos .foto {
-    background: linear-gradient(135deg,#f8dce9,#e9dced);
-}
-
-#carrinho {
-    background: #fff5f9;
-    border-radius: 20px;
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 30px;
-    box-shadow: 0 3px 15px #edcfdd;
-}
-
-#listaCarrinho {
-    margin-top: 20px;
-}
-
-.item-carrinho {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid #f0d5e2;
-    padding: 15px 0;
-    font-size: 13px;
-}
-
-.item-carrinho button {
-    background: #e9a5bf;
-    color: white;
-    border: none;
-    padding: 7px 12px;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.total {
-    text-align: right;
-    margin-top: 25px;
-    font-size: 21px;
-    font-weight: bold;
-    color: #bd648f;
-}
-
-.finalizar {
-    display: block;
-    margin: 20px 0 0 auto;
-    background: #b97999;
-    color: white;
-    border: none;
-    padding: 13px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-}
-
-footer {
-    background: #f3d3e2;
-    text-align: center;
-    padding: 40px 20px;
-    line-height: 2;
-    font-size: 12px;
-}
-
-footer h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px;
-}
-
-@media(max-width:600px) {
-    .logo { font-size: 32px; }
-    .banner h1 { font-size: 37px; }
-    .carrinho-topo {
-        position: static;
-        display: inline-block;
-        margin-top: 12px;
-    }
+/* Checkout */
+#checkout{position:fixed;inset:0;background:linear-gradient(135deg,#ffe3ee,#f8d5eb,#fceaf4);z-index:50;overflow-y:auto;display:none;padding:30px 5% 60px}
+#checkout.aberto{display:block}
+.deco{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.enfeite{position:absolute;animation:flutuar ease-in-out infinite alternate;opacity:.75}
+@keyframes flutuar{from{transform:translateY(0) rotate(-12deg)}to{transform:translateY(-20px) rotate(12deg)}}
+.ck{position:relative;max-width:980px;margin:0 auto}
+.ck-topo{text-align:center;margin-bottom:25px}
+.ck-topo h2{font-family:'Playfair Display',serif;font-size:36px;color:#b66d91}
+.ck-topo p{font-size:12px;letter-spacing:3px}
+.ck-voltar{background:none;border:none;color:#98647f;cursor:pointer;font-family:inherit;font-size:13px;margin-bottom:10px}
+.ck-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:25px;align-items:start}
+.ck-card{background:rgba(255,255,255,.92);border-radius:20px;padding:25px;box-shadow:0 4px 18px rgba(177,105,144,.18);margin-bottom:20px}
+.ck-card h3{font-family:'Playfair Display',serif;color:#b66c92;font-size:22px;margin-bottom:15px}
+.ck-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ck-grid .full{grid-column:1/-1}
+.ck input,.ck select{width:100%;padding:12px;border:1px solid #e8bcd1;border-radius:10px;font-family:inherit;color:#80576e;background:#fff;font-size:13px}
+.ck input:focus,.ck select:focus{outline:2px solid #e9a5c4}
+.metodos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.metodo{border:1.5px solid #edc0d5;border-radius:14px;padding:13px;cursor:pointer;text-align:center;font-size:13px;background:#fff;transition:.3s}
+.metodo input{display:none}
+.metodo.ativo{border-color:#d58bad;background:#ffe9f2;box-shadow:0 3px 10px rgba(213,139,173,.3)}
+.ck-area{display:none;margin-top:18px}
+.ck-area.ativa{display:block}
+.codigo{background:#fff;border:1px dashed #d58bad;border-radius:12px;padding:14px;font-size:11px;word-break:break-all;margin:10px 0}
+.nota{font-size:11px;color:#987b8b;margin-top:10px;line-height:1.6}
+.ck-item{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:9px 0;border-bottom:1px solid #f0d5e2}
+.ck-total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;color:#bd648f;margin-top:15px}
+.btn-pagar{width:100%;margin-top:18px;padding:14px;background:linear-gradient(135deg,#d58bad,#bd6d94);color:#fff;border:none;border-radius:28px;font-family:inherit;font-size:15px;cursor:pointer}
+#processando{position:fixed;inset:0;z-index:60;background:linear-gradient(135deg,#ffe3ee,#f8d5eb,#fceaf4);display:none;align-items:center;justify-content:center;text-align:center;padding:20px}
+#processando.aberto{display:flex}
+.proc-caixa{position:relative;background:rgba(255,255,255,.9);border-radius:26px;padding:45px 35px;max-width:420px;width:100%;box-shadow:0 10px 35px rgba(177,105,144,.3)}
+.proc-caixa h2{font-family:'Playfair Display',serif;color:#b66d91;font-size:28px;margin:18px 0 8px}
+.proc-caixa p{font-size:13px;line-height:1.7}
+.spin{width:70px;height:70px;margin:0 auto;border-radius:50%;border:6px solid #f6d3e3;border-top-color:#d58bad;animation:gira 1s linear infinite;display:flex;align-items:center;justify-content:center}
+.spin::after{content:"🐚";font-size:26px;animation:gira 1s linear infinite reverse}
+@keyframes gira{to{transform:rotate(360deg)}}
+.ok{width:80px;height:80px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#f5b4cf,#d58bad);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;animation:pop .5s}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.barra{height:6px;background:#f6d3e3;border-radius:5px;margin-top:22px;overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f5b4cf,#d58bad);transition:width 5s linear}
+@media(max-width:800px){.ck-wrap{grid-template-columns:1fr}}
+@media(max-width:600px){
+.logo{font-size:32px}.banner h1{font-size:37px}
+.carrinho-topo,.conta-topo{position:static;display:inline-block;margin:12px 4px 0}
 }
 </style>
 </head>
-
 <body>
-
 <div class="bolhas" id="bolhas"></div>
 
 <header>
     <div class="logo">Sereia</div>
     <p>𓇼 MODA PRAIA 𓇼</p>
-
     <nav>
         <a href="#inicio">Início</a>
         <a href="#biquinis">Biquínis</a>
         <a href="#maios">Maiôs</a>
         <a href="#conjuntos">Conjuntos</a>
         <a href="#oculos">Óculos</a>
-        <a href="#carrinho">Carrinho</a>
     </nav>
-
-    <div class="carrinho-topo" onclick="document.getElementById('carrinho').scrollIntoView({behavior:'smooth'})">
-        🐚 Carrinho (<span id="quantidade">0</span>)
-    </div>
+    <div class="conta-topo" id="contaTopo" onclick="clicarConta()">♡ Entrar</div>
+    <div class="carrinho-topo" onclick="abrirCarrinho()">🐚 Carrinho (<span id="quantidade">0</span>)</div>
 </header>
 
 <div class="banner" id="inicio">
     <div class="decoracao">𓇼 </div>
     <h1>Bem-vinda à Sereia</h1>
-    <p>
-        Um universo de delicadeza, beleza e encanto.
-        Descubra nossa coleção de moda praia,
-        inspirada na magia do oceano.
-    </p>
-    <button onclick="document.getElementById('biquinis').scrollIntoView({behavior:'smooth'})">
-        Conheça a coleção
-    </button>
+    <p>Um universo de delicadeza, beleza e encanto. Descubra nossa coleção de moda praia, inspirada na magia do oceano.</p>
+    <button onclick="document.getElementById('biquinis').scrollIntoView({behavior:'smooth'})">Conheça a coleção</button>
 </div>
 
-<section id="biquinis">
-    <div class="titulo">
-        <h2>𓇼 Biquínis de Crochê</h2>
-        <p>Peças artesanais feitas para encantar.</p>
-    </div>
-    <div class="produtos" id="lista-biquinis"></div>
-</section>
-
-<section id="maios">
-    <div class="titulo">
-        <h2>𓇼 Maiôs</h2>
-        <p>Elegância em cada detalhe.</p>
-    </div>
-    <div class="produtos" id="lista-maios"></div>
-</section>
-
-<section id="conjuntos">
-    <div class="titulo">
-        <h2>✧ Conjuntos Praianos</h2>
-        <p>Seu look completo para os dias de sol.</p>
-    </div>
-    <div class="produtos" id="lista-conjuntos"></div>
-</section>
-
-<section id="oculos">
-    <div class="titulo">
-        <h2>𓇼 Óculos de Sol</h2>
-        <p>O acessório perfeito para completar seu look.</p>
-    </div>
-    <div class="produtos oculos" id="lista-oculos"></div>
-</section>
-
-<section id="carrinho">
-    <div class="titulo">
-        <h2>🐚 Minha Sacolinha</h2>
-        <p>Seus favoritos estão aqui!</p>
-    </div>
-
-    <div id="listaCarrinho">
-        Sua sacolinha está vazia.
-    </div>
-
-    <div class="total">
-        Total: R$ <span id="total">0,00</span>
-    </div>
-
-    <button class="finalizar" onclick="finalizarCompra()">
-        Finalizar compra ♡
-        
-
-    </button>
-</section>
+<section id="biquinis"><div class="titulo"><h2>𓇼 Biquínis de Crochê</h2><p>Peças artesanais feitas para encantar.</p></div><div class="produtos" id="lista-biquinis"></div></section>
+<section id="maios"><div class="titulo"><h2>𓇼 Maiôs</h2><p>Elegância em cada detalhe.</p></div><div class="produtos" id="lista-maios"></div></section>
+<section id="conjuntos"><div class="titulo"><h2>✧ Conjuntos Praianos</h2><p>Seu look completo para os dias de sol.</p></div><div class="produtos" id="lista-conjuntos"></div></section>
+<section id="oculos"><div class="titulo"><h2>𓇼 Óculos de Sol</h2><p>O acessório perfeito para completar seu look.</p></div><div class="produtos oculos" id="lista-oculos"></div></section>
 
 <footer>
     <h2>𓇼 Sereia </h2>
@@ -418,249 +158,442 @@ footer h2 {
     <p>© 2026 Sereia — Todos os direitos reservados.</p>
 </footer>
 
+<!-- Painel do carrinho (só aparece ao clicar no botão) -->
+<div id="overlay" onclick="fecharCarrinho()"></div>
+<aside id="carrinho">
+    <button class="fechar" onclick="fecharCarrinho()" aria-label="Fechar">×</button>
+    <div class="titulo"><h2>🐚 Minha Sacolinha</h2><p>Seus favoritos estão aqui!</p></div>
+    <div id="listaCarrinho">Sua sacolinha está vazia.</div>
+    <div class="total">Total: R$ <span id="total">0,00</span></div>
+    <button class="finalizar" onclick="abrirCheckout()">Finalizar compra ♡</button>
+</aside>
+
+<!-- Login -->
+<div id="modalLogin" onclick="if(event.target===this)fecharLogin()">
+    <div class="caixa-login">
+        <button class="fechar" onclick="fecharLogin()" aria-label="Fechar">×</button>
+        <div class="logo">Sereia</div>
+        <p style="font-size:11px;letter-spacing:3px">𓇼 BEM-VINDA 𓇼</p>
+        <div class="abas">
+            <button id="abaEntrar" class="ativa" onclick="trocarModo('entrar')">Entrar</button>
+            <button id="abaCadastrar" onclick="trocarModo('cadastrar')">Criar conta</button>
+        </div>
+        <form onsubmit="enviarAuth(event)">
+            <input type="text" id="authNome" placeholder="Seu nome" style="display:none">
+            <input type="email" id="authEmail" placeholder="E-mail" required>
+            <input type="password" id="authSenha" placeholder="Senha (mín. 6 caracteres)" required>
+            <div id="msgLogin"></div>
+            <button class="enviar" type="submit" id="btnAuth">Entrar ♡</button>
+        </form>
+    </div>
+</div>
+<!-- Checkout -->
+<div id="checkout">
+  <div class="deco" id="decoCk"></div>
+  <div class="ck">
+    <button class="ck-voltar" onclick="fecharCheckout()">← Voltar à loja</button>
+    <div class="ck-topo"><p>★ 🐚 ✦ 🐚 ★</p><h2>Finalizar compra</h2><p>QUASE LÁ, SEREIA ♡</p></div>
+    <form class="ck-wrap" onsubmit="pagar(event)">
+      <div>
+        <div class="ck-card"><h3>✦ Seus dados</h3>
+          <div class="ck-grid">
+            <input class="full" id="ckNome" placeholder="Nome completo" required>
+            <input id="ckTel" data-mask="tel" placeholder="Telefone (DDD)" inputmode="numeric" required>
+            <input id="ckCpf" data-mask="cpf" placeholder="CPF" inputmode="numeric" required>
+          </div></div>
+        <div class="ck-card"><h3>🐚 Endereço de entrega</h3>
+          <div class="ck-grid">
+            <input id="ckCep" data-mask="cep" placeholder="CEP" inputmode="numeric" required>
+            <input id="ckNum" placeholder="Número" required>
+            <input class="full" id="ckRua" placeholder="Rua / Avenida" required>
+            <input id="ckBairro" placeholder="Bairro" required>
+            <input id="ckComp" placeholder="Complemento (opcional)">
+            <input id="ckCidade" placeholder="Cidade" required>
+            <input id="ckUf" placeholder="UF" maxlength="2" required>
+          </div></div>
+        <div class="ck-card"><h3>★ Forma de pagamento</h3>
+          <div class="metodos" id="metodos">
+            <label class="metodo ativo"><input type="radio" name="metodo" value="credito" checked>💳 Cartão de crédito</label>
+            <label class="metodo"><input type="radio" name="metodo" value="debito">💳 Cartão de débito</label>
+            <label class="metodo"><input type="radio" name="metodo" value="pix">✦ Pix</label>
+            <label class="metodo"><input type="radio" name="metodo" value="boleto">🧾 Boleto</label>
+          </div>
+          <div class="ck-area ativa" id="area-cartao"><div class="ck-grid">
+            <input class="full" id="cNum" data-mask="cartao" placeholder="Número do cartão" inputmode="numeric" autocomplete="off">
+            <input class="full" id="cNome" placeholder="Nome impresso no cartão" autocomplete="off">
+            <input id="cVal" data-mask="val" placeholder="Validade (MM/AA)" inputmode="numeric" autocomplete="off">
+            <input id="cCvv" data-mask="cvv" placeholder="CVV" inputmode="numeric" autocomplete="off">
+            <select class="full" id="cParc"></select>
+          </div></div>
+          <div class="ck-area" id="area-pix"><p class="nota">Ao confirmar, geramos o código Pix para você pagar no app do seu banco.</p>
+            <div class="codigo" id="pixCodigo"></div><p class="nota">Demonstração: este código é fictício.</p></div>
+          <div class="ck-area" id="area-boleto"><p class="nota">O boleto vence em 3 dias úteis e o pedido é liberado após a compensação.</p>
+            <div class="codigo" id="boletoCodigo"></div><p class="nota">Demonstração: esta linha digitável é fictícia.</p></div>
+        </div>
+      </div>
+      <div class="ck-card"><h3>🐚 Resumo do pedido</h3>
+        <div id="ckResumo"></div>
+        <div class="ck-total"><span>Total</span><span>R$ <span id="ckTotal">0,00</span></span></div>
+        <button class="btn-pagar" type="submit">Confirmar pedido ♡</button>
+        <p class="nota">🔒 Demonstração: nenhum pagamento real é feito e os dados do cartão não são guardados.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="processando"><div class="deco" id="decoProc"></div>
+  <div class="proc-caixa" id="procCaixa"></div>
+</div>
+<div id="aviso"></div>
+
 <script>
-
-// Criar bolinhas de água
-const fundo = document.getElementById("bolhas");
-
-for(let i=0; i<25; i++){
-    const bolha = document.createElement("div");
-    bolha.className = "bolha";
-    const tamanho = Math.random()*35+10;
-    bolha.style.width = tamanho+"px";
-    bolha.style.height = tamanho+"px";
-    bolha.style.left = Math.random()*100+"%";
-    bolha.style.animationDuration = (Math.random()*12+8)+"s";
-    bolha.style.animationDelay = Math.random()*10+"s";
-    fundo.appendChild(bolha);
+// Bolhas
+const fundo=document.getElementById("bolhas");
+for(let i=0;i<25;i++){
+    const b=document.createElement("div");b.className="bolha";
+    const t=Math.random()*35+10;
+    b.style.width=b.style.height=t+"px";
+    b.style.left=Math.random()*100+"%";
+    b.style.animationDuration=(Math.random()*12+8)+"s";
+    b.style.animationDelay=Math.random()*10+"s";
+    fundo.appendChild(b);
 }
 
-// Produtos da loja
-const categorias = {
-    biquinis: {
-        nomes: [
-            "Pérola do Mar","Rosa Coral","Concha Encantada",
-            "Sereia Pink","Oceano Lilás","Brisa do Mar",
-            "Estrela do Oceano","Maré Rosada","Lua de Pérola",
-            "Jardim das Conchas"
-        ],
-        preco: 500,
-        descricao: "Biquíni artesanal de crochê"
-    },
-
-    maios: {
-        nomes: [
-            "Pérola Azul","Ondas de Cetim","Maré Encantada",
-            "Coral Rosado","Sereia Dourada","Oceano Chic",
-            "Brisa Tropical","Concha Rosa","Lua do Mar",
-            "Estrela do Verão"
-        ],
-        preco: 500,
-        descricao: "Maiô elegante de moda praia"
-    },
-
-    conjuntos: {
-        nomes: [
-            "Paraíso das Pérolas","Brisa Tropical","Doce Oceano",
-            "Conjunto Coral","Sereia dos Sonhos","Mar Azul",
-            "Rosa de Verão","Ilha Encantada","Conchas Rosadas",
-            "Jardim Tropical"
-        ],
-        preco: 500,
-        descricao: "Conjunto praiano com saída de praia"
-    },
-
-    oculos: {
-        nomes: [
-            "Sol de Pérola","Golden Sea","Maré de Cristal",
-            "Pink Summer","Oceano Chic","Sunset",
-            "Coral Glow","Blue Ocean","Sereia Lux",
-            "Summer Pearl"
-        ],
-        preco: 200,
-        descricao: "Óculos de sol feminino"
-    }
+/* ================= PRODUTOS =================
+ Cada item: [nome, descrição visual, cor1, cor2, estampa, arquivo-da-foto(opcional)]
+ estampa: liso | bolinhas | listras | flores
+ FOTO REAL: coloque o arquivo em  imagens/<categoria>/<nome-sem-acento>.jpg
+ (ex.: imagens/biquinis/perola-do-mar.jpg) ou informe um link no 6º campo.
+ Se a foto não existir, aparece uma ilustração com a cor/estampa descrita. */
+const categorias={
+ biquinis:{base:"Biquíni artesanal de crochê",preco:500,itens:[
+  ["Pérola do Mar","roxo com bolinhas amarelas","#9b6fd1","#f6d44b","bolinhas"],
+  ["Rosa Coral","rosa coral liso","#f48c9b","","liso"],
+  ["Concha Encantada","turquesa com florzinhas brancas","#4fc7c0","#ffffff","flores"],
+  ["Sereia Pink","pink com listras brancas","#e84a9a","#ffffff","listras"],
+  ["Oceano Lilás","lilás liso","#c3a1e8","","liso"],
+  ["Brisa do Mar","azul bebê com bolinhas brancas","#9ccdf0","#ffffff","bolinhas"],
+  ["Estrela do Oceano","amarelo liso","#f7d54a","","liso"],
+  ["Maré Rosada","rosa com listras brancas","#f5a3c0","#ffffff","listras"],
+  ["Lua de Pérola","branco pérola liso","#f3ece6","","liso"],
+  ["Jardim das Conchas","verde menta com flores rosa","#9fe0c2","#f06fa0","flores"]]},
+ maios:{base:"Maiô elegante de moda praia",preco:500,itens:[
+  ["Pérola Azul","azul royal liso","#3a63c8","","liso"],
+  ["Ondas de Cetim","rosa cetim com listras brancas","#f2a0bd","#ffffff","listras"],
+  ["Maré Encantada","verde esmeralda liso","#2f9e7c","","liso"],
+  ["Coral Rosado","coral liso","#f9806f","","liso"],
+  ["Sereia Dourada","dourado liso","#d9b04a","","liso"],
+  ["Oceano Chic","preto com bolinhas brancas","#222222","#ffffff","bolinhas"],
+  ["Brisa Tropical","verde com flores amarelas","#4fb06b","#f7d54a","flores"],
+  ["Concha Rosa","rosa claro liso","#f7c3d6","","liso"],
+  ["Lua do Mar","branco liso","#ffffff","","liso"],
+  ["Estrela do Verão","laranja com bolinhas brancas","#f59a3c","#ffffff","bolinhas"]]},
+ conjuntos:{base:"Conjunto praiano com saída de praia",preco:500,itens:[
+  ["Paraíso das Pérolas","branco com bolinhas rosa","#ffffff","#f4a0c0","bolinhas"],
+  ["Brisa Tropical","verde com flores brancas","#58b87a","#ffffff","flores"],
+  ["Doce Oceano","azul claro com listras brancas","#8fc7ee","#ffffff","listras"],
+  ["Conjunto Coral","coral liso","#f9806f","","liso"],
+  ["Sereia dos Sonhos","lilás com bolinhas brancas","#b894e6","#ffffff","bolinhas"],
+  ["Mar Azul","azul marinho liso","#27457f","","liso"],
+  ["Rosa de Verão","rosa com flores brancas","#f38fb4","#ffffff","flores"],
+  ["Ilha Encantada","turquesa liso","#3fc2bd","","liso"],
+  ["Conchas Rosadas","rosa claro com listras rosa","#fbd6e4","#ee86ae","listras"],
+  ["Jardim Tropical","amarelo com flores verdes","#f8de6a","#3fa56a","flores"]]},
+ oculos:{base:"Óculos de sol feminino",preco:200,itens:[
+  ["Sol de Pérola","armação branca, lentes fumê","#f5f0ea","#4a3b45","liso"],
+  ["Golden Sea","armação dourada, lentes marrons","#d4af37","#6b4a2e","liso"],
+  ["Maré de Cristal","armação transparente azulada, lentes azuis","#bfe3f5","#3b78b8","liso"],
+  ["Pink Summer","armação rosa, lentes rosadas","#ee79a9","#b5457a","liso"],
+  ["Oceano Chic","armação preta, lentes pretas","#1f1f1f","#2b2b2b","liso"],
+  ["Sunset","armação laranja, lentes degradê","#f08a3c","#8a4a2e","liso"],
+  ["Coral Glow","armação coral, lentes marrons","#f9806f","#6b4a2e","liso"],
+  ["Blue Ocean","armação azul, lentes azuis","#3a63c8","#274a8f","liso"],
+  ["Sereia Lux","armação lilás, lentes roxas","#b894e6","#6a4a9a","liso"],
+  ["Summer Pearl","armação pérola, lentes verdes","#efe6dc","#3f7a5f","liso"]]}
 };
 
-let carrinho = [];
+const slug=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
 
-function criarProdutos(categoria, elemento){
-
-    const dados = categorias[categoria];
-    const destino = document.getElementById(elemento);
-
-    dados.nomes.forEach((nome, indice)=>{
-
-        const preco = dados.preco + (indice*50);
-
-        const produto = document.createElement("div");
-        produto.className = "produto";
-
-        const imagem = categoria === "oculos" ? "🕶️" :
-                       categoria === "biquinis" ? "🩱" :
-                       categoria === "maios" ? "👙" : "🌸";
-
-        produto.innerHTML = `
-            <div class="foto">${imagem}</div>
-
-            <h3>${nome}</h3>
-
-            <p class="descricao">${dados.descricao}</p>
-
-            <p class="preco">R$ ${preco.toFixed(2).replace(".",",")}</p>
-
-            ${categoria !== "oculos" ? `
-                <label>Escolha seu tamanho:</label>
-                <select class="tamanho">
-                    <option value="P">P</option>
-                    <option value="M">M</option>
-                    <option value="G">G</option>
-                    <option value="GG">GG</option>
-                </select>
-            ` : ""}
-
-            <button class="adicionar">♡ Adicionar ao carrinho</button>
-        `;
-
-        produto.querySelector(".adicionar").addEventListener("click",()=>{
-            const tamanho = categoria !== "oculos"
-                ? produto.querySelector(".tamanho").value
-                : "Único";
-
-            adicionarCarrinho(nome, preco, tamanho);
-        });
-
-        destino.appendChild(produto);
-    });
+// Ilustração de reserva (usada quando a foto real ainda não existe)
+function arte(cat,c1,c2,p,id){
+    let fill=c1,defs="";
+    if(p!=="liso"){
+        const m=p==="bolinhas"?`<circle cx="7" cy="7" r="3.2" fill="${c2}"/>`:
+                p==="listras"?`<rect y="0" width="14" height="5" fill="${c2}"/>`:
+                `<text x="1" y="12" font-size="13" fill="${c2}">✿</text>`;
+        defs=`<defs><pattern id="${id}" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="${c1}"/>${m}</pattern></defs>`;
+        fill=`url(#${id})`;
+    }
+    const st=`stroke="${c1==="#ffffff"||c1==="#f3ece6"?"#d9c7cf":c1}" stroke-width="2.5" fill="none"`;
+    const topo=`<path d="M55 80 Q100 15 145 80" ${st}/><path d="M55 80 L95 80 L75 120Z M105 80 L145 80 L125 120Z" fill="${fill}" stroke="#00000018"/>`;
+    const baixo=`<path d="M30 130 L55 135 M170 130 L145 135" ${st}/><path d="M55 135 L145 135 L100 175Z" fill="${fill}" stroke="#00000018"/>`;
+    let corpo="";
+    if(cat==="biquinis")corpo=topo+baixo;
+    else if(cat==="maios")corpo=`<path d="M70 35 L85 35 L100 90 L115 35 L130 35 L136 100 Q124 130 132 165 L68 165 Q76 130 64 100Z" fill="${fill}" stroke="#00000018"/>`;
+    else if(cat==="conjuntos")corpo=`<path d="M40 138 L160 138 L182 190 L18 190Z" fill="${fill}" opacity=".55" stroke="#00000018"/>`+topo+`<path d="M55 135 L145 135 L100 165Z" fill="${fill}" stroke="#00000018"/>`;
+    else corpo=`<path d="M10 92 L26 100 M190 92 L174 100" stroke="${c1}" stroke-width="6" stroke-linecap="round"/><path d="M98 98 Q100 90 102 98" ${st}/><ellipse cx="62" cy="102" rx="36" ry="27" fill="${c2}" stroke="${c1}" stroke-width="6"/><ellipse cx="138" cy="102" rx="36" ry="27" fill="${c2}" stroke="${c1}" stroke-width="6"/><path d="M48 92 Q58 86 68 90" stroke="#fff" stroke-opacity=".5" stroke-width="3" fill="none"/><path d="M124 92 Q134 86 144 90" stroke="#fff" stroke-opacity=".5" stroke-width="3" fill="none"/>`;
+    return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${defs}${corpo}</svg>`;
 }
 
-criarProdutos("biquinis","lista-biquinis");
-criarProdutos("maios","lista-maios");
-criarProdutos("conjuntos","lista-conjuntos");
-criarProdutos("oculos","lista-oculos");
+/* ===== API DE FOTOS (Pexels) =====
+ 1) Crie uma conta grátis em https://www.pexels.com/api/ e copie sua chave.
+ 2) Cole a chave abaixo. Ordem: foto sua em imagens/ -> foto da API -> ilustração.
+ As buscas ficam guardadas no navegador para economizar o limite da API. */
+const FOTOS_API={chave:""};
+const termoEn={biquinis:"crochet bikini",maios:"one piece swimsuit",conjuntos:"beachwear set",oculos:"sunglasses"};
+const corEn={roxo:"purple",rosa:"pink",azul:"blue",amarelo:"yellow",verde:"green",branco:"white",preto:"black",laranja:"orange",dourado:"gold",coral:"coral",lilás:"lilac",turquesa:"turquoise",marinho:"navy",royal:"blue",esmeralda:"green",menta:"mint"};
+async function buscarFoto(cat,visual,i){
+    if(!FOTOS_API.chave)return null;
+    const cor=visual.toLowerCase().split(/[\s,]+/).map(w=>corEn[w]).filter(Boolean)[0]||"";
+    const q=(cor+" "+termoEn[cat]).trim(),k="sereia_foto_"+q;
+    try{
+        let lista=JSON.parse(localStorage.getItem(k)||"null");
+        if(!lista){
+            const r=await fetch("https://api.pexels.com/v1/search?per_page=12&orientation=portrait&query="+encodeURIComponent(q),{headers:{Authorization:FOTOS_API.chave}});
+            lista=(await r.json()).photos.map(f=>f.src.large);
+            localStorage.setItem(k,JSON.stringify(lista));
+        }
+        return lista.length?lista[i%lista.length]:null;
+    }catch(e){return null}
+}
 
-// Carrinho de compras
-function adicionarCarrinho(nome, preco, tamanho){
-
-    carrinho.push({
-        nome,
-        preco,
-        tamanho
+function criarProdutos(cat,elemento){
+    const dados=categorias[cat],destino=document.getElementById(elemento);
+    dados.itens.forEach(([nome,visual,c1,c2,p,foto],i)=>{
+        const preco=dados.preco+i*50,id=`p-${cat}-${i}`;
+        const src=foto||`imagens/${cat}/${slug(nome)}.jpg`;
+        const el=document.createElement("div");el.className="produto";
+        el.innerHTML=`
+            <div class="foto"><img src="${src}" alt="${nome} - ${visual}" loading="lazy"></div>
+            <h3>${nome}</h3>
+            <p class="descricao">${dados.base} — ${visual}</p>
+            <p class="preco">R$ ${preco.toFixed(2).replace(".",",")}</p>
+            ${cat!=="oculos"?`<label>Escolha seu tamanho:</label><select class="tamanho"><option>P</option><option>M</option><option>G</option><option>GG</option></select>`:""}
+            <button class="adicionar">♡ Adicionar ao carrinho</button>`;
+        const img=el.querySelector("img");
+        img.addEventListener("error",async()=>{
+            if(!img.dataset.api){
+                const url=await buscarFoto(cat,visual,i);
+                if(url){img.dataset.api=1;img.src=url;return}
+            }
+            img.parentNode.innerHTML=arte(cat,c1,c2||c1,p,id);
+        });
+        el.querySelector(".adicionar").addEventListener("click",()=>{
+            const tam=cat!=="oculos"?el.querySelector(".tamanho").value:"Único";
+            adicionarCarrinho(nome,preco,tam);
+        });
+        destino.appendChild(el);
     });
+}
+["biquinis","maios","conjuntos","oculos"].forEach(c=>criarProdutos(c,"lista-"+c));
 
-    atualizarCarrinho();
-    alert(nome+" foi adicionado à sua sacolinha! ♡");
+/* ================= CONTA E CARRINHO =================
+ Demonstração: os dados ficam no navegador (localStorage).
+ Para uso real, é preciso um servidor/banco de dados. */
+let carrinho=[],usuario=null,pendente=null,modo="entrar";
+const $=id=>document.getElementById(id);
+const lerUsuarios=()=>JSON.parse(localStorage.getItem("sereia_usuarios")||"{}");
+const chaveCarrinho=()=>"sereia_carrinho_"+usuario.email;
+const salvarCarrinho=()=>{if(usuario)localStorage.setItem(chaveCarrinho(),JSON.stringify(carrinho))};
+
+function aviso(t){const a=$("aviso");a.textContent=t;a.classList.add("mostrar");clearTimeout(a._t);a._t=setTimeout(()=>a.classList.remove("mostrar"),2200)}
+
+async function hash(s){
+    try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+    catch(e){return btoa(unescape(encodeURIComponent(s)))}
+}
+
+function abrirLogin(msg){$("msgLogin").textContent=msg||"";$("modalLogin").classList.add("aberto")}
+function fecharLogin(){$("modalLogin").classList.remove("aberto");pendente=null}
+function trocarModo(m){
+    modo=m;
+    $("abaEntrar").classList.toggle("ativa",m==="entrar");
+    $("abaCadastrar").classList.toggle("ativa",m==="cadastrar");
+    $("authNome").style.display=m==="cadastrar"?"block":"none";
+    $("authNome").required=m==="cadastrar";
+    $("btnAuth").textContent=m==="entrar"?"Entrar ♡":"Criar minha conta ♡";
+    $("msgLogin").textContent="";
+}
+
+async function enviarAuth(e){
+    e.preventDefault();
+    const email=$("authEmail").value.trim().toLowerCase(),senha=$("authSenha").value,nome=$("authNome").value.trim();
+    const users=lerUsuarios(),h=await hash(senha);
+    if(modo==="cadastrar"){
+        if(users[email])return $("msgLogin").textContent="Este e-mail já tem cadastro.";
+        if(senha.length<6)return $("msgLogin").textContent="A senha precisa ter ao menos 6 caracteres.";
+        users[email]={nome:nome||email.split("@")[0],senha:h};
+        localStorage.setItem("sereia_usuarios",JSON.stringify(users));
+    }else if(!users[email]||users[email].senha!==h){
+        return $("msgLogin").textContent="E-mail ou senha incorretos.";
+    }
+    entrar(email,users[email].nome);
+    e.target.reset();
+}
+
+function entrar(email,nome){
+    usuario={email,nome};
+    localStorage.setItem("sereia_sessao",JSON.stringify(usuario));
+    carrinho=JSON.parse(localStorage.getItem(chaveCarrinho())||"[]");
+    if(pendente){carrinho.push(pendente);aviso(pendente.nome+" foi adicionado à sua sacolinha! ♡");pendente=null}
+    salvarCarrinho();
+    $("modalLogin").classList.remove("aberto");
+    atualizarConta();atualizarCarrinho();
+}
+
+function sair(){
+    salvarCarrinho();
+    usuario=null;carrinho=[];
+    localStorage.removeItem("sereia_sessao");
+    atualizarConta();atualizarCarrinho();fecharCarrinho();
+    aviso("Você saiu. Sua sacolinha ficou guardada ♡");
+}
+
+function atualizarConta(){
+    $("contaTopo").innerHTML=usuario?`♡ Olá, ${usuario.nome.split(" ")[0].replace(/[<>&]/g,"")}<small>Sair</small>`:"♡ Entrar";
+}
+function clicarConta(){usuario?sair():abrirLogin()}
+
+function abrirCarrinho(){$("carrinho").classList.add("aberto");$("overlay").classList.add("aberto")}
+function fecharCarrinho(){$("carrinho").classList.remove("aberto");$("overlay").classList.remove("aberto")}
+
+function adicionarCarrinho(nome,preco,tamanho){
+    const item={nome,preco,tamanho};
+    if(!usuario){pendente=item;abrirLogin("Entre ou crie sua conta para usar a sacolinha ♡");return}
+    carrinho.push(item);salvarCarrinho();atualizarCarrinho();
+    aviso(nome+" foi adicionado à sua sacolinha! ♡");
 }
 
 function atualizarCarrinho(){
-
-    const lista = document.getElementById("listaCarrinho");
-    const quantidade = document.getElementById("quantidade");
-
-    quantidade.textContent = carrinho.length;
-
-    if(carrinho.length === 0){
-        lista.innerHTML = "Sua sacolinha está vazia.";
+    const lista=$("listaCarrinho");
+    $("quantidade").textContent=carrinho.length;
+    if(!usuario){
+        lista.innerHTML='Entre na sua conta para ver sua sacolinha.<br><br><button class="finalizar" style="margin:0" onclick="fecharCarrinho();abrirLogin()">Entrar ♡</button>';
+    }else if(carrinho.length===0){
+        lista.textContent="Sua sacolinha está vazia.";
     }else{
-
-        lista.innerHTML = "";
-
-        carrinho.forEach((item, indice)=>{
-
-            const linha = document.createElement("div");
-            linha.className = "item-carrinho";
-
-            const informacao = document.createElement("span");
-            informacao.textContent =
-                item.nome+" | Tamanho: "+item.tamanho+
-                " | R$ "+item.preco.toFixed(2).replace(".",",");
-
-            const remover = document.createElement("button");
-            remover.textContent = "Remover";
-            remover.addEventListener("click",()=>{
-                carrinho.splice(indice,1);
-                atualizarCarrinho();
-            });
-
-            linha.append(informacao,remover);
-            lista.appendChild(linha);
+        lista.innerHTML="";
+        carrinho.forEach((item,i)=>{
+            const linha=document.createElement("div");linha.className="item-carrinho";
+            const info=document.createElement("span");
+            info.textContent=item.nome+" | Tamanho: "+item.tamanho+" | R$ "+item.preco.toFixed(2).replace(".",",");
+            const rm=document.createElement("button");rm.textContent="Remover";
+            rm.addEventListener("click",()=>{carrinho.splice(i,1);salvarCarrinho();atualizarCarrinho()});
+            linha.append(info,rm);lista.appendChild(linha);
         });
     }
-
-    const total = carrinho.reduce((soma,item)=>soma+item.preco,0);
-
-    document.getElementById("total").textContent =
-        total.toFixed(2).replace(".",",");
+    $("total").textContent=carrinho.reduce((s,i)=>s+i.preco,0).toFixed(2).replace(".",",");
 }
 
-function finalizarCompra(){
+/* ===== CHECKOUT (demonstração) ===== */
+const fmt=v=>v.toFixed(2).replace(".",",");
+const totalCarrinho=()=>carrinho.reduce((t,i)=>t+i.preco,0);
 
-    if(carrinho.length === 0){
-        alert("Sua sacolinha está vazia! ♡");
-        return;
+function enfeitar(id,qtd){
+    const c=$(id);c.innerHTML="";
+    const simb=["★","✦","✧","🐚","⭐","🐚"],cores=["#e9a5c4","#f4c95d","#d58bad","#fff"];
+    for(let k=0;k<qtd;k++){
+        const e=document.createElement("span");e.className="enfeite";
+        e.textContent=simb[k%simb.length];
+        e.style.left=Math.random()*96+"%";e.style.top=Math.random()*94+"%";
+        e.style.fontSize=(Math.random()*22+14)+"px";
+        e.style.color=cores[k%cores.length];
+        e.style.animationDuration=(Math.random()*3+2)+"s";
+        e.style.animationDelay=(Math.random()*2)+"s";
+        c.appendChild(e);
     }
-
-    const resumo = carrinho.map(item=>
-        item.nome+" - "+item.tamanho
-    ).join("\n");
-
-    alert(
-        "Obrigada por escolher a Sereia! 🐚\n\n"+
-        "Seus produtos:\n"+resumo+
-        "\n\nTotal: R$ "+
-        carrinho.reduce((soma,item)=>soma+item.preco,0)
-        .toFixed(2).replace(".",",")+
-        "\n\nEsta é uma demonstração da loja. O pagamento e o pedido ainda precisam ser integrados."
-    );
 }
 
-</script>
+function abrirCheckout(){
+    if(!usuario)return abrirLogin();
+    if(!carrinho.length)return aviso("Sua sacolinha está vazia! ♡");
+    fecharCarrinho();
+    $("ckResumo").innerHTML=carrinho.map(i=>`<div class="ck-item"><span>${i.nome.replace(/[<>&]/g,"")} (${i.tamanho})</span><span>R$ ${fmt(i.preco)}</span></div>`).join("");
+    $("ckTotal").textContent=fmt(totalCarrinho());
+    const t=totalCarrinho();
+    $("cParc").innerHTML=[1,2,3,4,5,6].map(n=>`<option value="${n}">${n}x de R$ ${fmt(t/n)} sem juros</option>`).join("");
+    if(!$("ckNome").value)$("ckNome").value=usuario.nome;
+    $("pixCodigo").textContent="00020126SEREIA"+Math.random().toString(36).slice(2,12).toUpperCase()+"5204000053039865406"+fmt(t).replace(",",".")+"5802BR";
+    $("boletoCodigo").textContent="34191.79001 01043.510047 91020.150008 "+Math.floor(Math.random()*9)+" "+String(Date.now()).slice(-10)+"00";
+    enfeitar("decoCk",28);
+    $("checkout").classList.add("aberto");$("checkout").scrollTop=0;
+}
+function fecharCheckout(){$("checkout").classList.remove("aberto")}
 
+// Troca do método de pagamento
+document.querySelectorAll('input[name="metodo"]').forEach(r=>r.addEventListener("change",()=>{
+    const m=r.value,cartao=m==="credito"||m==="debito";
+    document.querySelectorAll(".metodo").forEach(l=>l.classList.toggle("ativo",l.contains(document.querySelector('input[name="metodo"]:checked'))));
+    $("area-cartao").classList.toggle("ativa",cartao);
+    $("area-pix").classList.toggle("ativa",m==="pix");
+    $("area-boleto").classList.toggle("ativa",m==="boleto");
+    $("cParc").style.display=m==="credito"?"block":"none";
+}));
+
+// Máscaras
+const mascaras={
+    tel:v=>{v=v.replace(/\D/g,"").slice(0,11);return v.length>10?v.replace(/(\d{2})(\d{5})(\d{0,4})/,"($1) $2-$3"):v.replace(/(\d{2})(\d{0,4})(\d{0,4})/,"($1) $2-$3").replace(/-$/,"")},
+    cpf:v=>v.replace(/\D/g,"").slice(0,11).replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/,"$1.$2.$3-$4").replace(/[-.]$/,""),
+    cep:v=>v.replace(/\D/g,"").slice(0,8).replace(/(\d{5})(\d{0,3})/,"$1-$2").replace(/-$/,""),
+    cartao:v=>v.replace(/\D/g,"").slice(0,16).replace(/(\d{4})(?=\d)/g,"$1 "),
+    val:v=>v.replace(/\D/g,"").slice(0,4).replace(/(\d{2})(\d{0,2})/,"$1/$2").replace(/\/$/,""),
+    cvv:v=>v.replace(/\D/g,"").slice(0,4)
+};
+document.querySelectorAll("[data-mask]").forEach(inp=>inp.addEventListener("input",()=>{inp.value=mascaras[inp.dataset.mask](inp.value)}));
+
+// Preenche endereço pelo CEP (ViaCEP, gratuito e sem chave)
+$("ckCep").addEventListener("input",async()=>{
+    const cep=$("ckCep").value.replace(/\D/g,"");
+    if(cep.length!==8)return;
+    try{
+        const r=await fetch(`https://viacep.com.br/ws/${cep}/json/`),d=await r.json();
+        if(d.erro)return;
+        $("ckRua").value=d.logradouro||"";$("ckBairro").value=d.bairro||"";
+        $("ckCidade").value=d.localidade||"";$("ckUf").value=d.uf||"";
+        $("ckNum").focus();
+    }catch(e){}
+});
+
+function pagar(e){
+    e.preventDefault();
+    const m=document.querySelector('input[name="metodo"]:checked').value,cartao=m==="credito"||m==="debito";
+    const dig=id=>$(id).value.replace(/\D/g,"");
+    if(dig("ckTel").length<10)return aviso("Confira o telefone com DDD ♡");
+    if(dig("ckCpf").length!==11)return aviso("Confira o CPF ♡");
+    if(cartao&&(dig("cNum").length<13||dig("cVal").length!==4||dig("cCvv").length<3||!$("cNome").value.trim()))return aviso("Confira os dados do cartão ♡");
+    processar(m);
+}
+
+function processar(m){
+    const nomes={credito:"Cartão de crédito",debito:"Cartão de débito",pix:"Pix",boleto:"Boleto"};
+    const caixa=$("procCaixa"),total=fmt(totalCarrinho());
+    enfeitar("decoProc",34);
+    caixa.innerHTML=`<div class="spin"></div><h2 id="pTitulo">Processando…</h2><p id="pTexto">Conectando com o pagamento ✦</p><div class="barra"><i id="pBarra"></i></div>`;
+    $("processando").classList.add("aberto");
+    setTimeout(()=>$("pBarra").style.width="100%",50);
+    setTimeout(()=>{$("pTitulo").textContent="Validando seu pedido";$("pTexto").textContent="Conferindo os dados ★"},1600);
+    setTimeout(()=>{$("pTitulo").textContent="Aguardando aprovação";$("pTexto").textContent="Só mais um instante, sereia 🐚"},3200);
+    setTimeout(()=>{
+        const pedido="SER-"+Math.random().toString(36).slice(2,8).toUpperCase();
+        caixa.innerHTML=`<div class="ok">✓</div><h2>Pedido aprovado! ✦</h2>
+            <p>Obrigada, ${usuario.nome.split(" ")[0].replace(/[<>&]/g,"")}! ♡<br>Pedido <b>${pedido}</b><br>${nomes[m]} • R$ ${total}</p>
+            <p class="nota">Esta é uma demonstração da loja. O pagamento e o envio ainda precisam ser integrados.</p>
+            <button class="btn-pagar" onclick="concluirPedido()">Voltar à loja ♡</button>`;
+    },5200);
+}
+
+function concluirPedido(){
+    carrinho=[];salvarCarrinho();atualizarCarrinho();
+    $("processando").classList.remove("aberto");fecharCheckout();
+    aviso("Pedido realizado com sucesso! 🐚");
+}
+
+// Restaurar sessão ao abrir o site
+try{
+    const s=JSON.parse(localStorage.getItem("sereia_sessao")||"null");
+    if(s&&s.email)entrar(s.email,s.nome);
+}catch(e){}
+atualizarConta();atualizarCarrinho();
+</script>
 </body>
 </html>
-
-
-<!-- PAGAMENTO SEREIA -->
-<style>
-.pagamento-sereia {
-    background: #fff0f6;
-    border: 1px solid #edc5d8;
-    border-radius: 18px;
-    padding: 22px;
-    margin: 20px 0;
-    color: #80566e;
-}
-.pagamento-sereia h3 {
-    color: #b66c92;
-    font-family: 'Playfair Display', serif;
-    font-size: 25px;
-    margin-bottom: 15px;
-}
-.pagamento-sereia label {
-    display: block;
-    margin: 12px 0;
-    cursor: pointer;
-}
-.pagamento-sereia input,
-.pagamento-sereia select {
-    accent-color: #d987ad;
-}
-.pix-area {
-    display: none;
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 15px;
-}
-.cartao-area {
-    display: none;
-    margin-top: 15px;
-}
-.pagamento-sereia input[type=text] {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #edc5d8;
-    border-radius: 8px;
-}
-</style>
-
